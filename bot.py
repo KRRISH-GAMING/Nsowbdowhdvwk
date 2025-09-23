@@ -25,3 +25,4 @@ class Bot(Client):
         print('Bot Stopped Bye')
 
 Bot().run()
+await set_auto_menu(Bot)
