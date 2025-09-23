@@ -6,8 +6,6 @@ from pyrogram.errors.exceptions.flood_420 import FloodWait
 from plugins.database import *
 from plugins.config import cfg
 
-SESSION_DIR = "sessions"
-os.makedirs(SESSION_DIR, exist_ok=True)
 SESSION_STRING_SIZE = 351
 
 async def set_auto_menu(client):
@@ -93,8 +91,7 @@ async def login(client, message):
     
     phone_number = phone_number_msg.text
 
-    session_file = os.path.join(SESSION_DIR, f"{user_id}.session")
-    client = Client(session_file, cfg.API_ID, cfg.API_HASH)
+    client = Client(":memory:", cfg.API_ID, cfg.API_HASH)
     await client.connect()
     await phone_number_msg.reply("Sending OTP...")
     
@@ -137,7 +134,7 @@ async def login(client, message):
     try:
         user_data = get_session(message.from_user.id)
         if user_data is None:
-            uclient = Client(session_file, session_string=string_session, api_id=API_ID, api_hash=API_HASH)
+            uclient = Client(":memory:", session_string=string_session, api_id=cfg.API_ID, api_hash=cfg.API_HASH)
             await uclient.connect()
             set_session(message.from_user.id, session=string_session)
     except Exception as e:
