@@ -8,6 +8,34 @@ from plugins.config import cfg
 
 SESSION_STRING_SIZE = 351
 
+async def set_auto_menu(client):
+    try:
+        owner_cmds = [
+            BotCommand("start", "Check I am alive"),
+            BotCommand("login", "Login session"),
+            BotCommand("logout", "Logout session"),
+            BotCommand("accept", "Accept all pending requests"),
+            BotCommand("bcast", "Broadcast a message to users"),
+            BotCommand("fcast", "Forward a message to users"),
+            BotCommand("users", "View bot users"),
+        ]
+
+        for admin_id in cfg.SUDO:
+            await client.set_bot_commands(owner_cmds, scope=BotCommandScopeChat(chat_id=admin_id))
+
+        default_cmds = [
+            BotCommand("start", "Check I am alive"),
+            BotCommand("login", "Login session"),
+            BotCommand("logout", "Logout session"),
+            BotCommand("accept", "Accept all pending requests"),
+        ]
+
+        await client.set_bot_commands(default_cmds, scope=BotCommandScopeDefault())
+        
+        print("✅ Main Bot Menu Commands Set!")
+    except Exception as e:
+        print(f"⚠️ Set Menu Error: {e}")
+
 @Client.on_chat_join_request(filters.group | filters.channel)
 async def approve(client, message):
     op = message.chat
@@ -51,7 +79,7 @@ async def start(client, message):
 
 @Client.on_message(filters.private & ~filters.forwarded & filters.command(["login"]))
 async def login(client, message):
-    user_data = await get_session(message.from_user.id)
+    user_data = get_session(message.from_user.id)
     if user_data is not None:
         await message.reply("**Your Are Already Logged In. First /logout Your Old Session. Then Do Login.**")
         return 
@@ -103,11 +131,11 @@ async def login(client, message):
         return await message.reply('<b>invalid session sring</b>')
     
     try:
-        user_data = await get_session(message.from_user.id)
+        user_data = get_session(message.from_user.id)
         if user_data is None:
             uclient = Client(":memory:", session_string=string_session, api_id=API_ID, api_hash=API_HASH)
             await uclient.connect()
-            await set_session(message.from_user.id, session=string_session)
+            set_session(message.from_user.id, session=string_session)
     except Exception as e:
         return await message.reply_text(f"<b>ERROR IN LOGIN:</b> `{e}`")
     
@@ -115,18 +143,18 @@ async def login(client, message):
 
 @Client.on_message(filters.private & ~filters.forwarded & filters.command(["logout"]))
 async def logout(client, message):
-    user_data = await get_session(message.from_user.id)  
+    user_data = get_session(message.from_user.id)  
     if user_data is None:
         return 
     
-    await set_session(message.from_user.id, session=None)  
+    set_session(message.from_user.id, session=None)  
     await message.reply("**Logout Successfully** ♦")
 
 @Client.on_message(filters.command('accept') & filters.private)
 async def accept(client, message):
     show = await message.reply("**Please Wait.....**")
     
-    user_data = await get_session(message.from_user.id)
+    user_data = get_session(message.from_user.id)
     if user_data is None:
         await show.edit("**For Accepte Pending Request You Have To /login First.**")
         return
