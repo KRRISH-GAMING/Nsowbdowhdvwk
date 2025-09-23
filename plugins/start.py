@@ -6,6 +6,8 @@ from pyrogram.errors.exceptions.flood_420 import FloodWait
 from plugins.database import *
 from plugins.config import cfg
 
+SESSION_DIR = "sessions"
+os.makedirs(SESSION_DIR, exist_ok=True)
 SESSION_STRING_SIZE = 351
 
 async def set_auto_menu(client):
@@ -90,7 +92,9 @@ async def login(client, message):
         return await phone_number_msg.reply('<b>process cancelled !</b>')
     
     phone_number = phone_number_msg.text
-    client = Client(":memory:", cfg.API_ID, cfg.API_HASH)
+
+    session_file = os.path.join(SESSION_DIR, f"{user_id}.session")
+    client = Client(session_file, cfg.API_ID, cfg.API_HASH)
     await client.connect()
     await phone_number_msg.reply("Sending OTP...")
     
