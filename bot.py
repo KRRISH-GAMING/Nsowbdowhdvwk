@@ -19,10 +19,10 @@ class Bot(Client):
         me = await self.get_me()
         self.username = '@' + me.username
         print('Bot Started.')
+        await set_auto_menu(self)
 
     async def stop(self, *args):
         await super().stop()
         print('Bot Stopped Bye')
 
 Bot().run()
-await set_auto_menu(Bot)
