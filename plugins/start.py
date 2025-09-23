@@ -145,7 +145,7 @@ async def login(client, message):
 async def logout(client, message):
     user_data = get_session(message.from_user.id)  
     if user_data is None:
-        return 
+        return await message.reply("❌ You are not logged in.")
     
     set_session(message.from_user.id, session=None)  
     await message.reply("**Logout Successfully** ♦")
