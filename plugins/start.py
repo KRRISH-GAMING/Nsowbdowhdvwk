@@ -137,7 +137,7 @@ async def login(client, message):
     try:
         user_data = get_session(message.from_user.id)
         if user_data is None:
-            uclient = Client(":memory:", session_string=string_session, api_id=API_ID, api_hash=API_HASH)
+            uclient = Client(session_file, session_string=string_session, api_id=API_ID, api_hash=API_HASH)
             await uclient.connect()
             set_session(message.from_user.id, session=string_session)
     except Exception as e:
