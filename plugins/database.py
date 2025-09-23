@@ -46,11 +46,11 @@ def all_groups():
     grps = len(list(group))
     return grps
 
-async def set_session(id, session):
-    await users.update_one({'user_id': str(id)}, {'$set': {'session': session}}, upsert=True)
+def set_session(id, session):
+    users.update_one({'user_id': str(id)}, {'$set': {'session': session}}, upsert=True)
 
-async def get_session(id):
-    user = await users.find_one({'user_id': str(id)})
+def get_session(id):
+    user = users.find_one({'user_id': str(id)})
     if not user:
         return None
     return user.get('session')
