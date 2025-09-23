@@ -90,7 +90,7 @@ async def login(client, message):
         return await phone_number_msg.reply('<b>process cancelled !</b>')
     
     phone_number = phone_number_msg.text
-    client = Client(":memory:", API_ID, API_HASH)
+    client = Client(":memory:", cfg.API_ID, cfg.API_HASH)
     await client.connect()
     await phone_number_msg.reply("Sending OTP...")
     
