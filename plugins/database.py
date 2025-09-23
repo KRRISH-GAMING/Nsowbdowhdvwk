@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from configs import cfg
+from plugins.config import cfg
 
 client = MongoClient(cfg.MONGO_URI)
 
