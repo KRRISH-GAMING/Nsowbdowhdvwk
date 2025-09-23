@@ -1,5 +1,5 @@
 import asyncio
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
+from pyrogram.types import BotCommand, BotCommandScopeDefault, BotCommandScopeChat, Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram import filters, Client, errors, enums
 from pyrogram.errors import (UserNotParticipant, ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded, PasswordHashInvalid)
 from pyrogram.errors.exceptions.flood_420 import FloodWait
