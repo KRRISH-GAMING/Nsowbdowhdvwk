@@ -3,7 +3,7 @@ from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, 
 from pyrogram import filters, Client, errors, enums
 from pyrogram.errors import (UserNotParticipant, ApiIdInvalid, PhoneNumberInvalid, PhoneCodeInvalid, PhoneCodeExpired, SessionPasswordNeeded, PasswordHashInvalid)
 from pyrogram.errors.exceptions.flood_420 import FloodWait
-from plugins.database import add_user, add_group, all_users, all_groups, users, remove_user
+from plugins.database import *
 from plugins.config import cfg
 
 SESSION_STRING_SIZE = 351
@@ -51,7 +51,7 @@ async def start(client, message):
 
 @Client.on_message(filters.private & ~filters.forwarded & filters.command(["login"]))
 async def login(client, message):
-    user_data = await db.get_session(message.from_user.id)
+    user_data = await get_session(message.from_user.id)
     if user_data is not None:
         await message.reply("**Your Are Already Logged In. First /logout Your Old Session. Then Do Login.**")
         return 
@@ -103,11 +103,11 @@ async def login(client, message):
         return await message.reply('<b>invalid session sring</b>')
     
     try:
-        user_data = await db.get_session(message.from_user.id)
+        user_data = await get_session(message.from_user.id)
         if user_data is None:
             uclient = Client(":memory:", session_string=string_session, api_id=API_ID, api_hash=API_HASH)
             await uclient.connect()
-            await db.set_session(message.from_user.id, session=string_session)
+            await set_session(message.from_user.id, session=string_session)
     except Exception as e:
         return await message.reply_text(f"<b>ERROR IN LOGIN:</b> `{e}`")
     
@@ -115,18 +115,18 @@ async def login(client, message):
 
 @Client.on_message(filters.private & ~filters.forwarded & filters.command(["logout"]))
 async def logout(client, message):
-    user_data = await db.get_session(message.from_user.id)  
+    user_data = await get_session(message.from_user.id)  
     if user_data is None:
         return 
     
-    await db.set_session(message.from_user.id, session=None)  
+    await set_session(message.from_user.id, session=None)  
     await message.reply("**Logout Successfully** ♦")
 
 @Client.on_message(filters.command('accept') & filters.private)
 async def accept(client, message):
     show = await message.reply("**Please Wait.....**")
     
-    user_data = await db.get_session(message.from_user.id)
+    user_data = await get_session(message.from_user.id)
     if user_data is None:
         await show.edit("**For Accepte Pending Request You Have To /login First.**")
         return
