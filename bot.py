@@ -1,5 +1,6 @@
 from pyrogram import Client
 from plugins.config import cfg
+from plugins.start import set_auto_menu
 
 class Bot(Client):
 
