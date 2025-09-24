@@ -1,7 +1,7 @@
 from pymongo import MongoClient
-from plugins.config import cfg
+from plugins.config import MONGO_URI
 
-client = MongoClient(cfg.MONGO_URI)
+client = MongoClient(MONGO_URI)
 
 users = client['main']['users']
 groups = client['main']['groups']
