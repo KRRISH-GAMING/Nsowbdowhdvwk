@@ -1,5 +1,5 @@
 from pyrogram import Client
-from plugins.config import cfg
+from plugins.config import *
 from plugins.start import set_auto_menu
 
 class Bot(Client):
@@ -7,9 +7,9 @@ class Bot(Client):
     def __init__(self):
         super().__init__(
         "KM Auto Accept Bot",
-         api_id=cfg.API_ID,
-         api_hash=cfg.API_HASH,
-         bot_token=cfg.BOT_TOKEN,
+         api_id=API_ID,
+         api_hash=API_HASH,
+         bot_token=BOT_TOKEN,
          plugins=dict(root="plugins"),
          workers=50,
          sleep_threshold=10
