@@ -16,7 +16,7 @@ async def set_auto_menu(client):
             BotCommand("users", "View bot users"),
         ]
 
-        for admin_id in SUDO:
+        for admin_id in ADMIN:
             await client.set_bot_commands(owner_cmds, scope=BotCommandScopeChat(chat_id=admin_id))
 
         default_cmds = [
@@ -49,27 +49,28 @@ async def approve(client, message):
 @Client.on_message(filters.private & filters.command("start"))
 async def start(client, message):
     try:
-        await client.get_chat_member(CHID, message.from_user.id)
+        await client.get_chat_member(CHANNEL, message.from_user.id)
     except:
         try:
-            invite_link = await client.create_chat_invite_link(int(CHID), creates_join_request=True)
+            invite_link = await client.create_chat_invite_link(int(CHANNEL), creates_join_request=True)
         except:
-            await message.reply("Make Sure I Am Admin In Your Channel")
-            return 
+            await message.reply("⚠️ Make sure I'm admin in your channel.")
+            return
+
         key = InlineKeyboardMarkup(
-            [[
-                InlineKeyboardButton("🍿 Join Update Channel 🍿", url=invite_link.invite_link),
-                InlineKeyboardButton("🍀 Check Again 🍀", callback_data="chk")
-            ]]
-        ) 
-        await message.reply_text("⚠️Access Denied!⚠️\n\nPlease Join My Update Channel To Use Me.If You Joined The Channel Then Click On Check Again Button To Confirm.", reply_markup=key)
-        return 
+            [[InlineKeyboardButton("🔔 Join Channel", url=invite_link.invite_link)],
+            [InlineKeyboardButton("♻️ Check Again", callback_data="chk")]]
+        )
+        await message.reply_text("⚠️Access Denied!⚠️\n\nPlease Join My Channel To Use Me.\n\nIf You Joined The Channel Then Click On Check Again Button To Confirm.", reply_markup=key)
+        return
+
     keyboard = InlineKeyboardMarkup(
         [[
             InlineKeyboardButton("🗯 Channel", url="https://t.me/+YczdaoCKP-AxMWFl"),
             InlineKeyboardButton("💬 Support", url="https://t.me/+8E9nKxs8Y-Y2OGRl")
         ]]
     )
+
     add_user(message.from_user.id)
     await message.reply_text("🦊 Hello {}!\nI'm an auto approve [Admin Join Requests]({}) Bot.\nI can approve users in Groups/Channels.Add me to your chat and promote me to admin with add members permission.\n\n__Powered By : @DeadxNone __".format(message.from_user.mention, "https://t.me/telegram/153"), reply_markup=keyboard)
 
@@ -116,7 +117,7 @@ async def accept(client, message):
 @Client.on_callback_query(filters.regex("chk"))
 async def chk(_, cb : CallbackQuery):
     try:
-        await client.get_chat_member(CHID, cb.from_user.id)
+        await client.get_chat_member(CHANNEL, cb.from_user.id)
     except:
         await cb.answer("🙅‍♂️ You are not joined my channel first join channel then check again. 🙅‍♂️", show_alert=True)
         return 

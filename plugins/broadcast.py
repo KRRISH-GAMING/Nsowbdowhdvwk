@@ -5,7 +5,7 @@ from pyrogram.errors.exceptions.flood_420 import FloodWait
 from plugins.database import *
 from plugins.config import *
 
-@Client.on_message(filters.command("bcast") & filters.user(SUDO))
+@Client.on_message(filters.command("bcast") & filters.user(ADMIN))
 async def bcast(client, message):
     allusers = users
     lel = await message.reply_text("`⚡️ Processing...`")
@@ -35,7 +35,7 @@ async def bcast(client, message):
 
     await lel.edit(f"✅Successfull to `{success}` users.\n❌ Faild to `{failed}` users.\n👾 Found `{blocked}` Blocked users \n👻 Found `{deactivated}` Deactivated users.")
 
-@Client.on_message(filters.command("fcast") & filters.user(SUDO))
+@Client.on_message(filters.command("fcast") & filters.user(ADMIN))
 async def fcast(client, message):
     allusers = users
     lel = await message.reply_text("`⚡️ Processing...`")
