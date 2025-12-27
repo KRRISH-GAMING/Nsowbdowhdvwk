@@ -5,7 +5,7 @@ API_HASH = getenv("API_HASH", "dbba8a136120df358bd3b6e1fbc18792")
 BOT_TOKEN = getenv("BOT_TOKEN", "8060569801:AAEk1tmmpaUfIyydSe20TASfscafotRbqKA")
 
 # Your Force Subscribe Channel Id Below 
-CHANNEL = int(getenv("CHANNEL", "-1002829948273")) # Make Bot Admin In This Channel
+CHANNEL = int(getenv("CHANNEL", "-1003634851649")) # Make Bot Admin In This Channel
 
 # Admin Or Owner Id Below
 ADMIN = list(map(int, getenv("ADMIN", "8477930865").split()))
